@@ -10,21 +10,21 @@ const App = () => {
 
 
   useEffect(() => {
-    Axios.get("http://localhost:3001/get")
+    Axios.get("https://todo-ticker.herokuapp.com/get")
     .then((Response) => {
       setListOfTasks(Response.data)
     })
   },[])
 
   const addTask = () => {
-    Axios.post("http://localhost:3001/post", {text})
+    Axios.post("https://todo-ticker.herokuapp.com/get/post", {text})
     .then(() => {
       setListOfTasks([...listOfTasks, {text}])
     });
   }
 
   const deleteTask = (id) => {
-    Axios.delete(`http://localhost:3001/delete/${id}`)
+    Axios.delete(`https://todo-ticker.herokuapp.com/get/delete/${id}`)
     .then(() => {
       setListOfTasks(listOfTasks.filter((task) => {
         return task._id !== id;
