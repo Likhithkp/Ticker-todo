@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import "./App.css";
+import { useState,useEffect } from 'react';
+import Axios from "axios";
 
-function App() {
+const App = () => {
+
+  const [listOfTasks,setListOfTasks] = useState([])
+  const [text,setText] = useState("")
+
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/get")
+    .then((Response) => {
+      setListOfTasks(Response.data)
+    })
+  },[])
+
+  const addTask = () => {
+    Axios.post("http://localhost:3001/post", {text})
+    .then(() => {
+      setListOfTasks([...listOfTasks, {text}])
+    });
+  }
+
+  const deleteTask = (id) => {
+    Axios.delete(`http://localhost:3001/delete/${id}`)
+    .then(() => {
+      setListOfTasks(listOfTasks.filter((task) => {
+        return task._id !== id;
+      }))
+    })
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <h1>Ticker☑️</h1>
+      <div className='top'>
+      <input onChange={(event) => setText(event.target.value)}/>
+      <button className='add' onClick={() =>addTask()}>Add</button>
+      </div>
+
+
+      <div>
+        {listOfTasks.map((val) => {
+          return(
+            <div className='item'>
+            {val.text}
+            <div className='icons'>
+              <i className="ri-delete-bin-6-line" onClick={() => deleteTask(val._id)}></i>
+            </div>
+            </div>
+          )
+        })}
+        </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
