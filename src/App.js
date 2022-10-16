@@ -17,14 +17,14 @@ const App = () => {
   },[])
 
   const addTask = () => {
-    Axios.post("https://todo-ticker.herokuapp.com/get/post", {text})
+    Axios.post("https://todo-ticker.herokuapp.com/post", {text})
     .then(() => {
       setListOfTasks([...listOfTasks, {text}])
     });
   }
 
   const deleteTask = (id) => {
-    Axios.delete(`https://todo-ticker.herokuapp.com/get/delete/${id}`)
+    Axios.delete(`https://todo-ticker.herokuapp.com/delete/${id}`)
     .then(() => {
       setListOfTasks(listOfTasks.filter((task) => {
         return task._id !== id;
